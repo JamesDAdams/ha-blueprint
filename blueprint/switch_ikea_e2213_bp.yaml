@@ -31,37 +31,37 @@ blueprint:
           multiple: false
     button_one_short_press:
       name: Single Press - Button 1
-      description: Action to run on button 1 (top) single press
+      description: Action to run on button 1 (bottom) single press
       default: []
       selector:
         action: {}
     button_one_double_press:
       name: Double Press - Button 1
-      description: Action to run on button 1 (top) double press
+      description: Action to run on button 1 (bottom) double press
       default: []
       selector:
         action: {}
     button_one_long_press:
       name: Long Press - Button 1
-      description: Action to run on button 1 (top) long press
+      description: Action to run on button 1 (bottom) long press
       default: []
       selector:
         action: {}
     button_two_short_press:
       name: Single Press - Button 2
-      description: Action to run on button 2 (bottom) single press
+      description: Action to run on button 2 (top) single press
       default: []
       selector:
         action: {}
     button_two_double_press:
       name: Double Press - Button 2
-      description: Action to run on button 2 (bottom) double press
+      description: Action to run on button 2 (top) double press
       default: []
       selector:
         action: {}
     button_two_long_press:
       name: Long Press - Button 2
-      description: Action to run on button 2 (bottom) long press
+      description: Action to run on button 2 (top) long press
       default: []
       selector:
         action: {}
