@@ -1,0 +1,101 @@
+blueprint:
+  name: Switch Ikea E2213
+  description: "Blueprint Version: 08-01-25\n
+    Automate your Ikea E2213 2-Button Scene Switch via Zigbee2MQTT. (rdeangel_mod)\n\n
+    This blueprint has been updated to replace the previous Home Assistant generated sensor entity with an MQTT topic
+    trigger. \nThe correct MQTT topic is dynamically selected based on the MQTT device
+    name.\n"
+  domain: automation
+  input:
+    mode:
+      name: Automation Modes
+      description: https://www.home-assistant.io/docs/automation/modes/
+      default: parallel
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - single
+            - restart
+            - queued
+            - parallel
+          multiple: false
+          custom_value: false
+          sort: false
+    zigbee_device:
+      name: Zigbee Device (Ikea E2213 - 2 Buttons)
+      description: Select the correct Zigbee device to use.
+      selector:
+        device:
+          integration: mqtt
+          multiple: false
+    button_one_short_press:
+      name: Single Press - Button 1
+      description: Action to run on button 1 (top) single press
+      default: []
+      selector:
+        action: {}
+    button_one_double_press:
+      name: Double Press - Button 1
+      description: Action to run on button 1 (top) double press
+      default: []
+      selector:
+        action: {}
+    button_one_long_press:
+      name: Long Press - Button 1
+      description: Action to run on button 1 (top) long press
+      default: []
+      selector:
+        action: {}
+    button_two_short_press:
+      name: Single Press - Button 2
+      description: Action to run on button 2 (bottom) single press
+      default: []
+      selector:
+        action: {}
+    button_two_double_press:
+      name: Double Press - Button 2
+      description: Action to run on button 2 (bottom) double press
+      default: []
+      selector:
+        action: {}
+    button_two_long_press:
+      name: Long Press - Button 2
+      description: Action to run on button 2 (bottom) long press
+      default: []
+      selector:
+        action: {}
+  source_url: https://coucou.fr
+mode: !input mode
+max_exceeded: silent
+trigger:
+  - platform: mqtt
+    topic: zigbee2mqtt/+/action
+variables:
+  device_name: !input zigbee_device
+  expected_topic: zigbee2mqtt/{{ device_attr(device_name, 'name') }}/action
+condition:
+  - condition: template
+    value_template: "{{ trigger.topic == expected_topic }}"
+action:
+  - variables:
+      command: "{{ trigger.payload }}"
+  - choose:
+      - conditions:
+          - "{{ command == '1_short_release' }}"
+        sequence: !input button_one_short_press
+      - conditions:
+          - "{{ command == '2_short_release' }}"
+        sequence: !input button_two_short_press
+      - conditions:
+          - "{{ command == '1_double_press' }}"
+        sequence: !input button_one_double_press
+      - conditions:
+          - "{{ command == '2_double_press' }}"
+        sequence: !input button_two_double_press
+      - conditions:
+          - "{{ command == '1_long_press' }}"
+        sequence: !input button_one_long_press
+      - conditions:
+          - "{{ command == '2_long_press' }}"
+        sequence: !input button_two_long_press
